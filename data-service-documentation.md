@@ -13,7 +13,7 @@ Databricks uses a [medallion architecture](https://www.databricks.com/glossary/m
 This is a data design pattern used to logically organise data in a lakehouse, with the goal of incrementally and progressively improving the structure and quality of data as it flows through each layer of the architecture (from Bronze ⇒ Silver ⇒ Gold layer tables). 
 
 
-![Medallion Architecture](https://github.com/RSWT-Data-Service/git-docs/blob/e35587f701cc908b22cc64471a74e4ca62c05500/Images/medallion-architecture.png)
+![Medallion Architecture](https://www.databricks.com/sites/default/files/inline-images/building-data-pipelines-with-delta-lake-120823.png)
 
 Figure 1; Medallion Architecture.
 
