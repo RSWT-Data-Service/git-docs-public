@@ -1,6 +1,6 @@
 # RSWT Data Service Open Documentation
 
-This documentation provides high level, public versions of the Data Service's documentation which includes detais on platforms, processes and security mechanisms used to create robust, accessible and secure data analytics.
+This documentation provides high level, public versions of the Data Service's documentation which includes details on platforms, processes and security mechanisms used to create robust, accessible and secure data analytics.
 
 ## What we use
 
@@ -38,11 +38,11 @@ The Bronze layer is where raw data is landed from source systems. Data may under
 In the Silver layer, the data from the Bronze layer is cleaned, matched, merged, and conformed to the required data model or standards e.g. naming conventions etc. This provides a better view of the data and can help understand steps to achieve a unified data model. Data from different sources may be joined at this level, or kept independent but set to a shared model, for future unification. 
 
 :1st_place_medal: **Gold layer (analysis ready data)**
-Data in the Gold layer of the lakehouse is typically organized in analysis-ready tables and is used for reporting.  The final layer of data transformations and data quality rules are applied here. 
+Data in the Gold layer of the Lakehouse is typically organized in analysis-ready tables and is used for reporting.  The final layer of data transformations and data quality rules are applied here. 
 
 ### ESRI Arc GIS Online 
 
-Esri’s ArcGIS Online (AGOL) is a cloud-based geospatial platform that enables organizations to collect, manage, analyze, and share spatial data through web services and applications. Te Widlfie Trusts use AGOL as our primary GIS tool for webmapping, collaboration and data collection, alongside QGIS which is an open source desktop GIS. Within the AGOL ecosystem, Survey123 serves as one of the primary data ingestion tools for the Data Service, allowing users to design smart, form-centric surveys for capturing structured field data—often including location, photos, and geospatial attributes—in real time or offline. Data collected via Survey123 is directly published to hosted feature layers in AGOL and streamed into the Data Service making it immediately accessible for analysis and integration. Using the [ArcGIS API](https://developers.arcgis.com/rest/) and [AGOLxDatabricks Python linrary](https://www.esri.com/arcgis-blog/products/api-python/announcements/new-use-the-arcgis-api-for-python-in-databricks-notebooks), these datasets can be programmatically managed, accessed, and processed—supporting automated workflows for data validation, transformation, and synchronization with downstream data products, thereby streamlining the end-to-end data pipeline.
+Esri’s ArcGIS Online (AGOL) is a cloud-based geospatial platform that enables organizations to collect, manage, analyse, and share spatial data through web services and applications. Te Wildlife Trusts use AGOL as our primary GIS tool for webmapping, collaboration and data collection, alongside QGIS which is an open source desktop GIS. Within the AGOL ecosystem, Survey123 serves as one of the primary data ingestion tools for the Data Service, allowing users to design smart, form-centric surveys for capturing structured field data—often including location, photos, and geospatial attributes—in real time or offline. Data collected via Survey123 is directly published to hosted feature layers in AGOL and streamed into the Data Service making it immediately accessible for analysis and integration. Using the [ArcGIS API](https://developers.arcgis.com/rest/) and [AGOLxDatabricks Python linrary](https://www.esri.com/arcgis-blog/products/api-python/announcements/new-use-the-arcgis-api-for-python-in-databricks-notebooks), these datasets can be programmatically managed, accessed, and processed—supporting automated workflows for data validation, transformation, and synchronization with downstream data products, thereby streamlining the end-to-end data pipeline.
 
 ### Power BI
 
@@ -69,7 +69,7 @@ Safe transfer of data between systems is protected using a minimum of TLS 1.2 fo
 All data in transit uses HTTPS to ensure secure communication. 
 
 :white_check_mark: **Microsoft ENTRA ID**
-Access is integratedwith RSWT's wider Microsoft Entra ID system.
+Access is integrate dwith RSWT's wider Microsoft Entra ID system.
 
 :white_check_mark: **Multifactor Authentication**
 MFA is enabled for all users and roles on Databricks, Azure and GitHub. 
@@ -81,7 +81,7 @@ RSWT deploys a range of Conditional Access Policies to enforce security requirem
 RSWT ensures that specific resources remain protected by Resource Locks, maintaining their integrity and availability.
 
 :white_check_mark: **Audit Logs**
-Wthin Databricks, RSWT has deployed a range of audits to log user activity and record specific changes or access to specific resources. 
+Within Databricks, RSWT has deployed a range of audits to log user activity and record specific changes or access to specific resources. 
 
 
 ## How we manage who can see what and what they can do 
