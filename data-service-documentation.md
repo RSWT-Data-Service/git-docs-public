@@ -4,10 +4,23 @@ This documentation provides high level, public versions of the Data Service's do
 
 ## What we use
 
+![High Level Design Diagram](https://github.com/RSWT-Data-Service/git-docs/blob/3b815488f4c63676100e86147fdd729c72df3332/Images/RSWT_DSP_highlevel.png)
+
+Figure 1; High Level Design Diagram. 
+
+### Azure Data Factory
+
+Azure Data Factory is a cloud-based data integration service that enables users to create, schedule, and orchestrate data workflows. This service is particularly useful for enterprises looking to manage data transformation and movement at scale, allowing them to collect data from various sources, transform it in a scalable environment, and deliver processed data to data stores for business intelligence and analysis purposes. Azure Data Factory supports a wide range of data integration activities, facilitating the automation of data-driven workflows and integration with a broad spectrum of on-premises and cloud data sources.
+
+### Azure Storage
+
+[Azure Data Lake Storage](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) Gen2 is a comprehensive solution for Big Data Analytics
+Azure Data Lake Storage Gen2 is a powerful set of capabilities built on Azure Blob Storage, designed specifically for big data analytics. It combines the strengths of Azure Data Lake Storage Gen1 with Azure Blob Storage, offering a range of features such as file system semantics, file-level security, and scalability. Additionally, it provides low-cost, tiered storage with high availability and disaster recovery capabilities.
+
  ### Databricks 
   
 The Databricks Lakehouse is a unified data management architecture that combines the flexibility and scale of data lakes with the performance and reliability of data warehouses.
-Databricks Workspaces provide an user fieiendly environment for data engineering, data science, and analytics, providing a collaborative space to manage notebooks, 
+Databricks Workspaces provide an user friendly environment for data engineering, data science, and analytics, providing a collaborative space to manage notebooks, 
 data pipelines, and machine learning experiments. 
 Databricks uses a [medallion architecture](https://www.databricks.com/glossary/medallion-architecture). 
 This is a data design pattern used to logically organise data in a lakehouse, with the goal of incrementally and progressively improving the structure and quality of data as it flows through each layer of the architecture (from Bronze ⇒ Silver ⇒ Gold layer tables). 
@@ -16,6 +29,7 @@ This is a data design pattern used to logically organise data in a lakehouse, wi
 ![Medallion Architecture](https://www.databricks.com/sites/default/files/inline-images/building-data-pipelines-with-delta-lake-120823.png)
 
 Figure 1; Medallion Architecture.
+
 
 :3rd_place_medal: **Bronze layer (raw data)**
 The Bronze layer is where raw data is landed from source systems. Data may undergo minimal processing prior to landing in the bronze layer, for example, stripping out unnecessary personal data before data is saved.
@@ -26,7 +40,16 @@ In the Silver layer, the data from the Bronze layer is cleaned, matched, merged,
 :1st_place_medal: **Gold layer (analysis ready data)**
 Data in the Gold layer of the lakehouse is typically organized in analysis-ready tables and is used for reporting.  The final layer of data transformations and data quality rules are applied here. 
 
+### ESRI Arc GIS Online 
 
+Esri’s ArcGIS Online (AGOL) is a cloud-based geospatial platform that enables organizations to collect, manage, analyze, and share spatial data through web services and applications. Te Widlfie Trusts use AGOL as our primary GIS tool for webmapping, collaboration and data collection, alongside QGIS which is an open source desktop GIS. Within the AGOL ecosystem, Survey123 serves as one of the primary data ingestion tools for the Data Service, allowing users to design smart, form-centric surveys for capturing structured field data—often including location, photos, and geospatial attributes—in real time or offline. Data collected via Survey123 is directly published to hosted feature layers in AGOL and streamed into the Data Service making it immediately accessible for analysis and integration. Using the [ArcGIS API](https://developers.arcgis.com/rest/) and [AGOLxDatabricks Python linrary](https://www.esri.com/arcgis-blog/products/api-python/announcements/new-use-the-arcgis-api-for-python-in-databricks-notebooks), these datasets can be programmatically managed, accessed, and processed—supporting automated workflows for data validation, transformation, and synchronization with downstream data products, thereby streamlining the end-to-end data pipeline.
+
+### Power BI
+
+The Data Service use Power BI as one of the primary tools for producing data reports, visualisations and dashboards. BI products are produced for internal (RSWT) and external (federation and wider partners/public) audiences. Power BI Embedded Capacity is a dedicated set of compute resources (CPU, RAM, storage) used to host and deliver Power BI content. It acts as a private, high-performance, and scalable server, enabling fast report performance, large dataset storage, and widespread report distribution to free users enabling them to view content published by Pro/PPU users in workspaces assigned the Capacity. This is particularly important for The Wildlife Trusts as this enables us to share outputs with users from the different Trusts regardless of whether these Trusts have Power BI licences.
+
+
+---
 
 ## How we keep things safe
 
