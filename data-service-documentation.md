@@ -1,10 +1,12 @@
+![TWT logo](https://github.com/RSWT-Data-Service/git-docs-public/blob/1df2cded460d492ce3bb4095997f0f2dc5a023cc/resources/images/TWT.png)  
+
 # RSWT Data Service Open Documentation
 
 This documentation provides high level, public versions of the Data Service's documentation which includes details on platforms, processes and security mechanisms used to create robust, accessible and secure data analytics.
 
 ## What we use
 
-![High Level Design Diagram](https://github.com/RSWT-Data-Service/git-docs/blob/3b815488f4c63676100e86147fdd729c72df3332/Images/RSWT_DSP_highlevel.png)
+![High Level Design Diagram](https://github.com/RSWT-Data-Service/git-docs-public/blob/1df2cded460d492ce3bb4095997f0f2dc5a023cc/resources/images/DataService_highlevel.png)
 
 Figure 1; High Level Design Diagram. 
 
@@ -14,7 +16,7 @@ Azure Data Factory is a cloud-based data integration service that enables users 
 
 ### Azure Storage
 
-[Azure Data Lake Storage](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) Gen2 is a comprehensive solution for Big Data Analytics
+[Azure Data Lake Storage](https://github.com/RSWT-Data-Service/git-docs-public/blob/1df2cded460d492ce3bb4095997f0f2dc5a023cc/resources/images/building-data-pipelines-with-delta-lake-120823%20(1).png) Gen2 is a comprehensive solution for Big Data Analytics
 Azure Data Lake Storage Gen2 is a powerful set of capabilities built on Azure Blob Storage, designed specifically for big data analytics. It combines the strengths of Azure Data Lake Storage Gen1 with Azure Blob Storage, offering a range of features such as file system semantics, file-level security, and scalability. Additionally, it provides low-cost, tiered storage with high availability and disaster recovery capabilities.
 
  ### Databricks 
