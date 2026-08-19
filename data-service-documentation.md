@@ -1,3 +1,5 @@
+Last updated (UK): 29/06/2026 12:56
+
 ![TWT logo](https://github.com/RSWT-Data-Service/git-docs-public/blob/1df2cded460d492ce3bb4095997f0f2dc5a023cc/resources/images/TWT.png)  
 
 # RSWT Data Service Open Documentation

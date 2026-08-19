@@ -1,3 +1,5 @@
+Last updated (UK): 17/03/2026 13:03
+
 # Hello, Welcome to the RSWT Data Service's open documentation. 
 
 The Data Service team at the Royal Society of Wildlfie Trusts (RSWT) provides a capability to collect, store, manage and analyse data at scale, delivering insights that support [Strategy 2030](https://www.wildlifetrusts.org/strategy-2030) and unlock shared value across the Wildlife Trust federation and RSWT. We maintain and develop the core data infrastructure, including using Azure Databricks as the central platform for data engineering and analytics. We build data driven insights on a range of use cases and projects which can be made available to a range of audiences within and outside the federation through APIs, dashboards via Power BI and mapping through ArcGIS Online. By coordinating shared projects, developing new use cases, enabling secure data sharing, and providing expert guidance, the Data Service acts as the federation’s backbone for evidence‑led decision making and modern data practice.
