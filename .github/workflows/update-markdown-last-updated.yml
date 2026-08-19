@@ -1,0 +1,163 @@
+name: Update Markdown "Last updated (UK)" stamps
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: ["main", "master"]
+    paths:
+      - "**/*.md"
+      - ".github/workflows/update-markdown-last-updated.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update-markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required so git log sees full history
+
+      - name: Configure Git author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Update .md files with last commit date (UK)
+        shell: bash
+        env:
+          INSERT_IF_MISSING: "true"       # "false" → only act if a marker already exists
+          OUTPUT_MODE: "plain"          # "comment" | "plain" | "bold"
+          INSERT_POSITION: "top"     # "top" or "after_h1"
+          ROOT_GLOB: ""                   # e.g. "docs/" to restrict scope
+          ENFORCE_POSITION: "true"        # "true" → remove old markers, insert at desired position
+        run: |
+          set -euo pipefail
+
+          # Gather .md files (tracked). Restrict to ROOT_GLOB if provided.
+          if [[ -n "${ROOT_GLOB}" ]]; then
+            mapfile -t files < <(git ls-files "${ROOT_GLOB}" | grep -iE '\.md$' || true)
+          else
+            mapfile -t files < <(git ls-files | grep -iE '\.md$' || true)
+          fi
+
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "No .md files found. Exiting."
+            exit 0
+          fi
+
+          # Helper: compute UK timestamp string for a file using its last commit epoch
+          compute_uk_line () {
+            local file="$1"
+            local epoch
+            if git log -1 --format=%ct -- "$file" >/dev/null 2>&1; then
+              epoch=$(git log -1 --format=%ct -- "$file")
+            else
+              epoch=$(date +%s)
+            fi
+            local last_uk
+            last_uk="$(TZ='Europe/London' date -d "@$epoch" '+%d/%m/%Y %H:%M')"
+            case "${OUTPUT_MODE}" in
+              comment) echo "<!-- Last updated (UK): ${last_uk} -->" ;;
+              bold)    echo "**Last updated (UK):** ${last_uk}" ;;
+              plain|*) echo "Last updated (UK): ${last_uk}" ;;
+            esac
+          }
+
+          # Marker regex (matches comment/plain/bold, UK or not, with DD/MM/YYYY or YYYY-MM-DD, optional time)
+          MARKER_RE='^[[:space:]]*(<!--[[:space:]]*)?last updated([[:space:]]*\(uk\))?:[[:space:]]*(([0-9]{2}/[0-9]{2}/[0-9]{4})([[:space:]][0-9]{2}:[0-9]{2})?|[0-9]{4}-[0-9]{2}-[0-9]{2})([[:space:]]*-->)?[[:space:]]*$'
+          MARKER_BOLD_RE='^[[:space:]]*\*\*last updated([[:space:]]*\(uk\))?:\*\*[[:space:]]*(([0-9]{2}/[0-9]{2}/[0-9]{4})([[:space:]][0-9]{2}:[0-9]{2})?|[0-9]{4}-[0-9]{2}-[0-9]{2})[[:space:]]*$'
+
+          # Helpers to insert at top / after first H1
+          insert_at_top () {
+            local line="$1" file="$2" tmp
+            tmp="$(mktemp)"
+            {
+              echo "$line"
+              echo
+              cat "$file"
+            } > "$tmp"
+            mv "$tmp" "$file"
+          }
+
+          insert_after_h1 () {
+            local line="$1" file="$2" tmp
+            tmp="$(mktemp)"
+            awk -v ins="$line" '
+              BEGIN { inserted=0 }
+              {
+                if (!inserted && match($0, /^[[:space:]]*#[^#]/)) {
+                  print $0
+                  print ""
+                  print ins
+                  print ""
+                  inserted=1
+                } else {
+                  print $0
+                }
+              }
+              END {
+                if (!inserted) {
+                  # No H1 found: prepend at top
+                  printf("%s\n\n", ins)
+                }
+              }
+            ' "$file" > "$tmp"
+            mv "$tmp" "$file"
+          }
+
+          changed=0
+
+          for f in "${files[@]}"; do
+            [[ -f "$f" ]] || continue
+
+            newline="$(compute_uk_line "$f")"
+
+            # 1) Optionally remove ALL existing markers (enforce position)
+            tmp="$(mktemp)"
+            awk -v IGNORECASE=1 -v re1="$MARKER_RE" -v re2="$MARKER_BOLD_RE" '
+              BEGIN { }
+              {
+                line=$0
+                if (match(line, re1) || match(line, re2)) {
+                  # skip marker lines entirely
+                } else {
+                  print $0
+                }
+              }
+            ' "$f" > "$tmp"
+
+            # Track if removal changed the file
+            file_modified=0
+            if ! diff -q "$f" "$tmp" >/dev/null 2>&1; then
+              mv "$tmp" "$f"
+              file_modified=1
+            else
+              rm "$tmp"
+            fi
+
+            # 2) Decide whether to insert a marker (if missing) or always insert (when enforcing)
+            # We now consider the file to have no markers because we removed them.
+            if [[ "${INSERT_IF_MISSING}" == "true" || "${ENFORCE_POSITION}" == "true" ]]; then
+              if [[ "${INSERT_POSITION}" == "top" ]]; then
+                insert_at_top "$newline" "$f"
+              else
+                insert_after_h1 "$newline" "$f"
+              fi
+              file_modified=1
+            fi
+
+            if [[ $file_modified -eq 1 ]]; then
+              git add "$f"
+              changed=1
+            fi
+          done
+
+          if [[ $changed -eq 1 ]]; then
+            git commit -m "chore: enforce position + update 'Last updated (UK)' markers [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
